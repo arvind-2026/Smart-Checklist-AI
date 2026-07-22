@@ -86,6 +86,9 @@ generated during normal use and should not be treated as source code.
   tracking for more stable results.
 - Add optional notifications when important weather-dependent items are
   missing.
+- Add a mask to the checklist when AQI is high and sunscreen when the UV index
+  is high. Reliable visual confirmation of these items would require custom
+  YOLO training.
 - Add live traffic and public-transit routing that compares car and Metro travel
   times, then recommends the better option with a clear reason. This would use
   precise origin and destination data, saved destinations, and a routing API;
