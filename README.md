@@ -44,8 +44,7 @@ It cannot confirm that water was drunk or protective equipment was worn.
 
 Webcam availability, lighting, camera angle, object overlap, and low-confidence
 predictions can affect detection. The general YOLO model also recognizes only
-specific object classes. The current modes therefore use only relevant classes
-that are included in the bundled model's training labels.
+specific object classes.
 
 ### Automatic location and weather failures
 
@@ -57,12 +56,6 @@ an incomplete API response.
 
 Raw hourly forecasts contain many values. The application needs one reliable
 weather summary that can decide whether to add an umbrella to the checklist.
-
-### Keeping the application simple
-
-Early versions included too many unsupported checklist items plus separate
-console, voice, image, video, webcam, and manual-weather workflows. These made
-the project harder to understand and maintain.
 
 ### Protecting configuration and generated data
 
@@ -82,22 +75,15 @@ generated during normal use and should not be treated as source code.
 - Runtime values such as scan duration, confidence threshold, forecast window,
   request timeout, fallback city, and fallback image path are centralized in
   `config.py` instead of being hard-coded throughout the project.
-- Routine modes were limited to Office, College, and Travel, using only six
-  relevant classes supported by the bundled YOLO model.
 - The interface uses one routine selector and one scan button.
 - The API key is stored in an ignored `.env` file, and generated CSV history is
   excluded through `.gitignore`.
-- The application clearly states that detection proves only visual presence; it
-  does not prove that an item was used, worn, consumed, or applied.
 
 ## Future Upgrades
 
 - Train a custom YOLO model if unsupported checklist items are added later.
 - Combine detections across multiple frames using confidence voting and object
   tracking for more stable results.
-- Add browser-native webcam streaming for easier camera access when the
-  application is hosted remotely.
-- Allow carefully controlled checklist customization in a future advanced mode.
 - Add optional notifications when important weather-dependent items are
   missing.
 - Add live traffic and public-transit routing that compares car and Metro travel
@@ -106,11 +92,6 @@ generated during normal use and should not be treated as source code.
   unavailable traffic data would produce a warning instead of a fabricated
   recommendation.
 - Store history in a database with user accounts and multiple-device support.
-- Add weekly and monthly progress summaries while keeping the main interface
-  focused on one compliance chart.
-- Add privacy controls such as disabling frame previews and confirming that
-  camera frames are processed locally without being saved.
-- Package and test the application for easier installation on macOS and Windows.
 
 ## macOS setup
 
