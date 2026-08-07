@@ -17,7 +17,7 @@ from config import (
     PROJECT_NAME,
     PROJECT_SUBTITLE,
     ROUTINE_MODES,
-    SAMPLE_IMAGE_RELATIVE_PATH,
+    SAMPLE_IMAGE_RELATIVE_PATHS,
     WEATHER_FORECAST_HOURS,
     WEBCAM_SCAN_DURATION_SECONDS,
 )
@@ -31,7 +31,9 @@ from history import DEFAULT_HISTORY_FILE, create_session_record, load_history, s
 from weather_service import get_automatic_weather
 
 
-SAMPLE_IMAGE_PATH = PROJECT_DIRECTORY / SAMPLE_IMAGE_RELATIVE_PATH
+SAMPLE_IMAGE_PATHS = tuple(
+    PROJECT_DIRECTORY / relative_path for relative_path in SAMPLE_IMAGE_RELATIVE_PATHS
+)
 
 
 def detect_webcam_or_sample():
@@ -57,7 +59,10 @@ def detect_webcam_or_sample():
     if class_names is None:
         live_frame.empty()
         st.warning("Webcam detection could not start. Using the sample image.")
-        detected_items = map_yolo_classes(detect_objects_in_image(SAMPLE_IMAGE_PATH))
+        detected_classes = set()
+        for sample_image_path in SAMPLE_IMAGE_PATHS:
+            detected_classes.update(detect_objects_in_image(sample_image_path))
+        detected_items = map_yolo_classes(detected_classes)
         return "Sample image fallback", detected_items
 
     return (
