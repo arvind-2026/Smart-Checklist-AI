@@ -33,9 +33,6 @@ ENVIRONMENT_THRESHOLDS = {
 
 EXTREME_WEATHER_FALLBACK = {
     "rain_probability": 100,
-    "uv_index": 11,
-    "aqi": 500,
-    "temperature_celsius": 45,
 }
 
 

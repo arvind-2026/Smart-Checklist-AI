@@ -34,11 +34,6 @@ from weather_service import get_automatic_weather
 SAMPLE_IMAGE_PATH = PROJECT_DIRECTORY / SAMPLE_IMAGE_RELATIVE_PATH
 
 
-def readable_name(value):
-    """Turn an internal snake-case name into a display label."""
-    return value.replace("_", " ").title()
-
-
 def detect_webcam_or_sample():
     """Run a timed webcam scan, using the sample only on failure."""
     live_frame = st.empty()
@@ -97,16 +92,13 @@ def show_result(mode):
         st.markdown("#### Checklist")
         for item, was_detected in state.items():
             icon = "✅" if was_detected else "❌"
-            st.write(f"{icon} {format_item_name(item).title()}")
+            st.write(f"{icon} {format_item_name(item)}")
         st.caption(f"Detection: {detection_source}")
     with right_column:
         st.markdown(f"#### Next {WEATHER_FORECAST_HOURS} hours")
         st.write(f"**Location:** {location}")
         st.write(f"**Source:** {weather_source}")
         st.write(f"🌧️ Highest rain chance: {weather['rain_probability']}%")
-        st.write(f"☀️ Highest UV index: {weather['uv_index']}")
-        st.write(f"🌫️ Highest AQI: {weather['aqi']}")
-        st.write(f"🌡️ Highest temperature: {weather['temperature_celsius']} °C")
 
     if alerts:
         for message in alerts:
@@ -143,7 +135,7 @@ def main():
         "Detection confirms only visual presence, not whether an item was used."
     )
 
-    mode = st.selectbox("Routine mode", list(ROUTINE_MODES), format_func=readable_name)
+    mode = st.selectbox("Routine mode", list(ROUTINE_MODES), format_func=format_item_name)
     st.write("Hold your checklist items where the webcam can see them, then start the scan.")
     if st.button(
         f"Start {WEBCAM_SCAN_DURATION_SECONDS}-second scan",

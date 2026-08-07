@@ -4,8 +4,8 @@ from config import ENVIRONMENTAL_ALERT_MESSAGES
 
 
 def format_item_name(item):
-    """Convert an internal item name into readable words."""
-    return item.replace("_", " ")
+    """Convert an internal item name into a display label."""
+    return item.replace("_", " ").title()
 
 
 def create_alert_messages(missing_items):
