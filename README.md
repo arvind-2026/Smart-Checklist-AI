@@ -169,8 +169,8 @@ The run scripts open a Streamlit interface in your browser. The workflow is:
 
 Weather is selected automatically. The webcam scans live video for thirty seconds,
 keeps unique detections at 60% confidence or higher, closes automatically and
-saves one final result. If the webcam or model cannot start, the app checks
-`test_media/checklist_items.png` instead.
+saves one final result. If the webcam or model cannot start, the app checks the
+configured fallback images instead.
 The single compliance-over-time chart appears beneath the result.
 
 History is saved at `data/compliance_history.csv`. Exactly one row is appended
@@ -178,8 +178,9 @@ after each completed routine check.
 
 ## Sample-image fallback
 
-The application automatically uses `test_media/checklist_items.png` only when webcam
-detection cannot start.
+The application automatically combines strong detections from
+`test_media/checklist_items.png` and `test_media/checklist_items_umbrella.png` only
+when webcam detection cannot start. Both images use the same 60% threshold.
 
 ## Main project files
 

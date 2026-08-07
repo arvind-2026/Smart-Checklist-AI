@@ -14,7 +14,10 @@ ROUTINE_MODES = {
 # Detection settings.
 WEBCAM_SCAN_DURATION_SECONDS = 30
 DETECTION_CONFIDENCE_THRESHOLD = 0.60
-SAMPLE_IMAGE_RELATIVE_PATH = "test_media/checklist_items.png"
+SAMPLE_IMAGE_RELATIVE_PATHS = (
+    "test_media/checklist_items.png",
+    "test_media/checklist_items_umbrella.png",
+)
 
 # Live-weather and fallback settings.
 WEATHER_API_URL = "https://api.weatherapi.com/v1/forecast.json"
