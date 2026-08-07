@@ -86,9 +86,9 @@ generated during normal use and should not be treated as source code.
   tracking for more stable results.
 - Add optional notifications when important weather-dependent items are
   missing.
-- Add a mask to the checklist when AQI is high and sunscreen when the UV index
-  is high. Reliable visual confirmation of these items would require custom
-  YOLO training.
+- Add a mask when AQI is high, sunscreen when the UV index is high, and
+  temperature-based suggestions for extreme heat or cold. Reliable visual
+  confirmation of unsupported items would require custom YOLO training.
 - Add live traffic and public-transit routing that compares car and Metro travel
   times, then recommends the better option with a clear reason. This would use
   precise origin and destination data, saved destinations, and a routing API;
@@ -158,10 +158,6 @@ Automatic location is approximate IP-based geolocation. If it fails, the app
 tries New Delhi. If that live request also fails, it uses an Extreme offline
 weather profile and continues to display New Delhi as the location.
 The checklist uses the highest rain chance across the next eight hourly entries.
-UV, AQI, and temperature remain visible as useful weather information.
-
-Live AQI is estimated from current PM2.5 using current US EPA breakpoints. It is
-a checklist context value, not medical advice or an official 24-hour AQI report.
 
 ## Application workflow
 

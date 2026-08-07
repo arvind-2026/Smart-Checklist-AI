@@ -1,6 +1,5 @@
 """Automatic live weather with location and offline fallbacks."""
 
-import math
 import os
 from pathlib import Path
 
@@ -20,33 +19,6 @@ from config import (
 
 
 PROJECT_DIRECTORY = Path(__file__).resolve().parent
-PM25_AQI_BREAKPOINTS = [
-    (0.0, 9.0, 0, 50),
-    (9.1, 35.4, 51, 100),
-    (35.5, 55.4, 101, 150),
-    (55.5, 125.4, 151, 200),
-    (125.5, 225.4, 201, 300),
-    (225.5, 325.4, 301, 500),
-]
-
-
-def calculate_pm25_aqi(pm25_value):
-    """Estimate numeric US AQI from a current PM2.5 concentration."""
-    concentration = max(0.0, math.floor(float(pm25_value) * 10) / 10)
-
-    for low_pm, high_pm, low_aqi, high_aqi in PM25_AQI_BREAKPOINTS:
-        if low_pm <= concentration <= high_pm:
-            scaled_aqi = (
-                (high_aqi - low_aqi)
-                / (high_pm - low_pm)
-                * (concentration - low_pm)
-                + low_aqi
-            )
-            return int(scaled_aqi + 0.5)
-
-    return 500
-
-
 def load_weather_api_key():
     """Load the WeatherAPI key from the project .env file or environment."""
     load_dotenv(PROJECT_DIRECTORY / ".env")
@@ -55,7 +27,6 @@ def load_weather_api_key():
 
 def parse_live_weather_response(response_data):
     """Summarize the next eight forecast hours for checklist rules."""
-    current = response_data["current"]
     location = response_data["location"]
     current_epoch = int(location["localtime_epoch"])
     forecast_hours = []
@@ -71,19 +42,8 @@ def parse_live_weather_response(response_data):
     if not next_hours:
         raise ValueError("No upcoming hourly forecast was returned")
 
-    pm25_values = [
-        hour["air_quality"]["pm2_5"]
-        for hour in next_hours
-        if hour.get("air_quality") and "pm2_5" in hour["air_quality"]
-    ]
-    if not pm25_values:
-        pm25_values = [current["air_quality"]["pm2_5"]]
-
     weather_data = {
         "rain_probability": max(int(hour["chance_of_rain"]) for hour in next_hours),
-        "uv_index": max(float(hour["uv"]) for hour in next_hours),
-        "aqi": calculate_pm25_aqi(max(pm25_values)),
-        "temperature_celsius": max(float(hour["temp_c"]) for hour in next_hours),
     }
     location_name = f"{location['name']}, {location['country']}"
     return location_name, weather_data
@@ -102,7 +62,6 @@ def fetch_live_weather(location_query, api_key=None):
         "key": api_key,
         "q": location_query,
         "days": WEATHER_FORECAST_DAYS,
-        "aqi": "yes",
         "alerts": "no",
     }
 
